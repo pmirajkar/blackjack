@@ -45,4 +45,8 @@ public class Dealer {
 		}
 		return sum;
 	}
+
+	public void clearCards() {
+		this.cards.clear();
+	}
 }

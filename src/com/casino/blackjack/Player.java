@@ -31,6 +31,7 @@ public class Player {
 	}
 
 	public void setBet(int bet) {
+		this.money -= bet;
 		this.bet = bet;
 	}
 
@@ -66,10 +67,25 @@ public class Player {
 	}
 	
 	public void loseBet() {
-		this.money -= bet;
+		this.bet = 0;
 	}
 	
 	public void winBet() {
+		this.money += (2*bet);
+		this.bet = 0;
+	}
+	
+	public void winBlackJack() {
+		this.money += (bet*2.5);
+		this.bet = 0;
+	}
+
+	public void pushBet() {
 		this.money += bet;
+		this.bet = 0;
+	}
+
+	public void clearCards() {
+		this.cards.clear();
 	}
 }

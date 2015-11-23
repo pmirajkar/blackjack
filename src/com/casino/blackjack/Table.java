@@ -16,20 +16,8 @@ public class Table {
 		index = 0;
 		cards = new ArrayList<Card>();
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 13; j++) {
-				Card c = new Card(i, j);
-				cards.add(c);
-			}
-		}
-		Collections.shuffle(cards);
-	}
-	
-	public void createGame() {
-		index = 0;
-		cards = new ArrayList<Card>();
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 13; j++) {
-				Card c = new Card(i, j);
+			for (int j = 1; j < 14; j++) {
+				Card c = new Card(i, (j > 10) ? 10 : j);
 				cards.add(c);
 			}
 		}
@@ -52,11 +40,18 @@ public class Table {
 	}
 
 	public void loseBet() {
-		this.money -= bet;
+		this.money -= (2 * bet);
+		this.bet = 0;
 	}
-	
+
+	public void loseBlackJack() {
+		this.money -= (2.5 * bet);
+		this.bet = 0;
+	}
+
 	public void winBet() {
 		this.money += bet;
+		this.bet = 0;
 	}
 
 	public int getMoney() {
@@ -65,5 +60,9 @@ public class Table {
 
 	public int getBet() {
 		return bet;
+	}
+
+	public void pushBet() {
+		this.money += bet;
 	}
 }
