@@ -40,12 +40,12 @@ public class Table {
 	}
 
 	public void loseBet() {
-		this.money -= (2 * bet);
+		this.money -= bet;
 		this.bet = 0;
 	}
 
 	public void loseBlackJack() {
-		this.money -= (2.5 * bet);
+		this.money -= (1.5 * bet);
 		this.bet = 0;
 	}
 
@@ -63,6 +63,6 @@ public class Table {
 	}
 
 	public void pushBet() {
-		this.money += bet;
+//		this.money += bet;
 	}
 }
