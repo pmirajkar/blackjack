@@ -41,7 +41,11 @@ public class Dealer {
   public int getSum() {
     int sum = 0;
     for (Card c : this.cards) {
-      sum += c.val;
+      if (c.val == 1) {
+        sum += 10;
+      } else {
+        sum += c.val;
+      }
     }
     return sum;
   }

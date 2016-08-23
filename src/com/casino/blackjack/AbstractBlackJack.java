@@ -1,23 +1,23 @@
 package com.casino.blackjack;
 
 public abstract class AbstractBlackJack implements IBlackJack {
-  
+
   protected Player     p;
   protected Dealer     d;
   protected Table      t;
   protected GameResult gResult = GameResult.NONE;
   protected GameState  gs      = GameState.NONE;
-  
+
   @Override
   public abstract boolean continueBlackJack();
-  
+
   @Override
   public void endGame() {
     this.p.clearCards();
     this.d.clearCards();
     this.gResult = GameResult.NONE;
   }
-  
+
   @Override
   public void processGameResult(GameResult g) {
     switch (g) {
@@ -40,57 +40,57 @@ public abstract class AbstractBlackJack implements IBlackJack {
         break;
     }
   }
-  
+
   @Override
   public int hit() {
     this.p.addCard(this.t.dealCard());
     return this.p.isValid();
   }
-  
+
   @Override
   public abstract PlayerChoice getPlayerChoice();
-  
+
   @Override
   public abstract void printMessage(GameResult g);
-  
+
   @Override
   public abstract void printGameState();
-  
+
   @Override
   public void dealCards(int game) {
     this.p.addCards(this.t.dealCards());
     this.d.addCards(this.t.dealCards());
   }
-  
+
   @Override
   public abstract int getBetInfo(int game, String playerName);
-  
+
   @Override
   public void placeBets(int bet) {
     this.p.setBet(bet);
     this.t.acceptBet(this.p.getBet());
   }
-  
+
   @Override
   public void executeGame(int game) {
-    
     placeBets(getBetInfo(game, this.p.getName()));
     dealCards(game);
     printGameState();
-    
+
     if (this.p.getSum() == 21) {
       if (this.d.getSum() == 21) {
         this.gResult = GameResult.TIE;
       } else {
         this.gResult = GameResult.BLACKJACK;
       }
+    } else if (this.d.getSum() == 21) {
+      this.gResult = GameResult.LOSE;
     }
-    
-    while (PlayerChoice.HIT == getPlayerChoice()) {
+
+    while ((this.gResult == GameResult.NONE) && (PlayerChoice.HIT == getPlayerChoice())) {
       hit();
-      
       printGameState();
-      
+
       if (this.p.getSum() > 21) {
         this.gResult = GameResult.LOSE;
         break;
@@ -105,12 +105,12 @@ public abstract class AbstractBlackJack implements IBlackJack {
         break;
       }
     }
-    
+
     if (this.gResult == GameResult.NONE) {
       while (this.d.getSum() <= 17) {
         this.d.addCard(this.t.dealCard());
       }
-      
+
       if (this.d.getSum() > 21) {
         this.gResult = GameResult.WIN;
       } else if (this.p.getSum() > this.d.getSum()) {
@@ -123,19 +123,19 @@ public abstract class AbstractBlackJack implements IBlackJack {
     }
     this.gs = GameState.GAMEOVER;
     processGameResult(this.gResult);
-    
+
     printGameState();
     printMessage();
-    
+
     endGame();
   }
-  
+
   @Override
   public abstract void printMessage();
-  
+
   @Override
   public abstract Player getPlayerInfo();
-  
+
   @Override
   public void init() {
     this.gResult = GameResult.NONE;
@@ -144,7 +144,7 @@ public abstract class AbstractBlackJack implements IBlackJack {
     this.t = new Table(10000);
     printMessage();
   }
-  
+
   @Override
   public void run() {
     this.gs = GameState.PREINIT;

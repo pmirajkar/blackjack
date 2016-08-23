@@ -60,8 +60,17 @@ public class Player {
   
   public int getSum() {
     int sum = 0;
+    boolean ace = false;
     for (Card c : this.cards) {
+      if (c.val == 1) {
+        ace = true;
+      }
       sum += c.val;
+    }
+    if (ace) {
+      if ((sum + 10) <= 21) {
+        sum += 10;
+      }
     }
     return sum;
   }

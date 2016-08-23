@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class CLIBlackJack extends AbstractBlackJack implements IBlackJack {
-  
+
   private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  
+
   @Override
   public boolean continueBlackJack() {
     try {
@@ -19,7 +19,7 @@ public class CLIBlackJack extends AbstractBlackJack implements IBlackJack {
     }
     return false;
   }
-  
+
   @Override
   public PlayerChoice getPlayerChoice() {
     try {
@@ -31,12 +31,12 @@ public class CLIBlackJack extends AbstractBlackJack implements IBlackJack {
     }
     return PlayerChoice.STAND;
   }
-  
+
   @Override
   public void printMessage(GameResult g) {
     System.out.println(this.p.getName() + " " + g.name());
   }
-  
+
   @Override
   public void printGameState() {
     switch (this.gs) {
@@ -46,13 +46,15 @@ public class CLIBlackJack extends AbstractBlackJack implements IBlackJack {
         System.out.println("********************************************");
         System.out.println("Player: " + this.p.getName() + " Money: " + this.p.getMoney() + " Bet: " + this.p.getBet()
             + " \nCards: " + this.p.getCards() + " Sum: " + this.p.getSum());
-        // System.out.println("Dealer: " + d.getName() + " Cards: " +
-        // d.getCards() + " Sum: " + d.getSum());
+        System.out.println("Dealer: " + this.d.getName() + " Cards: " + this.d.getCards().get(0));
+        // + " Sum: " + this.d.getSum());
         // System.out.println("Table Money: " + t.getMoney() + " Bet: " +
         // t.getBet());
         System.out.println("********************************************");
         break;
       case GAMEOVER:
+        System.out.println("********************************************");
+        System.out.println("*                 Game Over                *");
         System.out.println("********************************************");
         System.out.println("Player: " + this.p.getName() + " Money: " + this.p.getMoney() + " Bet: " + this.p.getBet()
             + " \nCards: " + this.p.getCards() + " Sum: " + this.p.getSum());
@@ -63,12 +65,36 @@ public class CLIBlackJack extends AbstractBlackJack implements IBlackJack {
         break;
     }
   }
-  
+
   @Override
   public int getBetInfo(int game, String playerName) {
+    System.out.println("********************************************");
+    System.out.println(" Enter bet amount: ");
+    System.out.print("1. 10\n2. 20\n3. 50\n4. 100\nYour Choice : ");
+    try {
+      String line = this.br.readLine();
+      int bet = 0;
+      switch (new Integer(line)) {
+        case 1:
+          bet = 10;
+          break;
+        case 2:
+          bet = 20;
+          break;
+        case 3:
+          bet = 50;
+          break;
+        case 4:
+          bet = 100;
+          break;
+      }
+      return bet;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return 10;
   }
-  
+
   @Override
   public void printMessage() {
     switch (this.gs) {
@@ -85,12 +111,12 @@ public class CLIBlackJack extends AbstractBlackJack implements IBlackJack {
         break;
     }
   }
-  
+
   @Override
   public Player getPlayerInfo() {
     return new Player("Paul", 1000);
   }
-  
+
   public static void main(String[] args) {
     IBlackJack bj = new CLIBlackJack();
     bj.run();
